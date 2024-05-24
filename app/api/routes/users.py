@@ -5,10 +5,10 @@ from app.schemas import Token, User, UserCreate, User
 from app.core import security
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
-from dependencies import SessionDb,oauth2_scheme
+from ..dependencies import SessionDb,oauth2_scheme
 
 
-router =  APIRouter(prefix="/api/v1/user/")
+router =  APIRouter(prefix="/api/v1/user")
 
 
 

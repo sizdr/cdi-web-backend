@@ -1,9 +1,10 @@
-from jose import JWTError, jwt
+import jwt
+from jwt.exceptions import InvalidTokenError
 from datetime import timedelta,datetime,timezone
 from app.schemas import TokenData
 from fastapi import HTTPException,Depends
 from fastapi.security import OAuth2PasswordBearer
-from crud import get_user_by_email
+from ..crud import get_user_by_email
 from typing import Annotated
 from sqlalchemy.orm import Session
 from app.core import database
@@ -42,7 +43,7 @@ async def decode_token(token: str):
         if username is None:
             return False
         token_data = TokenData(username=username)
-    except JWTError:
+    except InvalidTokenError:
         return False
     user = get_user_by_email(SessionDb, token_data.username)
     if user is None:
@@ -62,7 +63,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         if username is None:
             raise credentials_exception
         token_data = TokenData(username=username)
-    except JWTError:
+    except InvalidTokenError:
         raise credentials_exception
     user = get_user_by_email(SessionDb, token_data.username)
     if user is None:

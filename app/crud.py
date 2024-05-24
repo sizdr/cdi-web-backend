@@ -7,6 +7,9 @@ from app.core import security
 def get_user_by_email(db:Session, email:str) -> User:
     return db.query(models.User).filter(models.User.email == email).first()
 
+def get_user_by_username(db:Session, username: str) -> User:
+    return db.query(models.User).filter(models.User.username == username).first()
+
 def create_user(db: Session, user: UserCreate):
     hashed_password = security.get_password_hashed(user.password)
     db_user = models.User(email=user.email, hashed_password=hashed_password,username=user.username)
