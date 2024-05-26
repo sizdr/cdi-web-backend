@@ -21,6 +21,14 @@ def create_user(db: Session, user: UserCreate):
 def get_users(db:Session) -> list[User]:
     return db.query(models.User).all()
 
+def authenticate_user_by_username(db:Session, username:str, password:str) -> User:
+    user = get_user_by_username(db,username)
+    if not user:
+        return False
+    if not security.verify_password(password,user.hashed_password):
+        return False
+    return user
+
 def authenticate_user(db:Session, email:str, password:str) -> User:
     user = get_user_by_email(db,email)
     if not user:
