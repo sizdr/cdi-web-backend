@@ -7,6 +7,7 @@ class Role(int,Enum):
     Admin = 3
 
 
+
 class UserBase(BaseModel):
     email : EmailStr
     username: str
@@ -23,8 +24,7 @@ class User(UserBase):
 
 class UserDB(User):
     password : int
-    class Config:
-        from_attributes = True
+
 
 
 
@@ -34,3 +34,4 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str
+    role: int
