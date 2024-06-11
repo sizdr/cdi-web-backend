@@ -1,4 +1,4 @@
-from pydantic import BaseModel , EmailStr
+from pydantic import BaseModel , EmailStr, Field
 from enum import Enum
 
 class Role(int,Enum):
@@ -35,3 +35,12 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: str
     role: int
+
+
+class ReviewCreate(BaseModel):
+    rating: int
+    comment: str | None = None
+
+class ReviewInDB(ReviewCreate):
+    id: int
+    user_id: int
