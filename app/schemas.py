@@ -25,6 +25,10 @@ class User(UserBase):
 class UserDB(User):
     password : int
 
+class UserUpdate(BaseModel):
+    password: str | None = None
+    username: str | None = None
+
 
 
 
@@ -44,3 +48,6 @@ class ReviewCreate(BaseModel):
 class ReviewInDB(ReviewCreate):
     id: int
     user_id: int
+
+
+
