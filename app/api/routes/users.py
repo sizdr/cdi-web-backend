@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends,HTTPException
 from typing import Annotated
 from app import crud
-from app.schemas import Token, User, UserCreate, User,TokenData
+from app.schemas import Token, User, UserCreate, UserUpdate
 from app.core import security
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
-from ..dependencies import SessionDb,get_current_user,TokenDep,admin_authorization
+from ..dependencies import SessionDb,get_current_user,CurrentUser
 
 
 router =  APIRouter(prefix="/api/v1/user")
@@ -22,18 +22,6 @@ def create_user(user:UserCreate, db: SessionDb):
     return crud.create_user(db=db,user=user)
 
 
-#Endpoint protegido que devuleve la lista de todos los usuarios 
-@router.get("/users", response_model= list[User], dependencies=[Depends(admin_authorization)])
-def get_users(db:SessionDb):
-    users = crud.get_users(db)
-    return users
-
-@router.get("/get_user/{username}", response_model= User, dependencies=[Depends(admin_authorization)])
-def get_user(db:SessionDb, username:str):
-    user = crud.get_user_by_username(db,username)
-    return user
-
-
 #Endpoint para crear token
 @router.post("/login")
 async def login_for_access_token(db:SessionDb, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
@@ -44,7 +32,6 @@ async def login_for_access_token(db:SessionDb, form_data: Annotated[OAuth2Passwo
     access_token =  security.create_access_token(data={"sub": user.username,"role":user.role_id}, expires_delta=access_token_expires)
     return Token(access_token= access_token, token_type="bearer")
 
-
 @router.post("/current_user", response_model=User)
-async def get_current_user_name(user: Annotated[User,Depends(get_current_user)]):
+async def get_current_user_name(user:CurrentUser):
     return user
