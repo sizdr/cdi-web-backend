@@ -23,7 +23,7 @@ def get_user(db:SessionDb, username:str):
 
 #Endpoint que elimina a un usuario por su id
 @router.delete("/delete_user/{id}")
-def delete_user(db:SessionDb,id:int) -> any:
+def delete_user(db:SessionDb,id:int):
     return crud.delete_user(db,id)
 
 #Endpoint que retorna todos las calificaciones hechas
