@@ -12,10 +12,7 @@ app.include_router(admin_panel.router, tags=["admin"])
 app.include_router(reviews.router)
 
 origins = [
-    "http://localhost",
-    "http://127.0.0.1:5500",
-    "http://127.0.0.1:5500/CDI-Web/CDI%20WEB%20Rep/HTML/signin.html?",
-    "http://localhost:5500",
+    "*",
 ]
 
 app.add_middleware(
